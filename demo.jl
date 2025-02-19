@@ -1,0 +1,18 @@
+using DifferentialEquations
+using Plots
+
+include("acrobot_model!.jl")
+
+function tau_func(t)
+    y = 0
+end
+
+I1, I2, m1, m2, l1, l2, lc1, lc2 = (0.0083, 0.0083, 1, 1, 2, 2, 1, 1);
+tspan = (0.0, 20.0);
+x0 = [-pi/4, pi/6, 0.0, 0.0];
+
+param = (I1, I2, m1, m2, l1, l2, lc1, lc2);
+prob = ODEProblem(acrobot_model!, x0, tspan, param);
+sol = solve(prob);
+
+plot(sol)
