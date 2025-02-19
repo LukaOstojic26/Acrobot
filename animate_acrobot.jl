@@ -17,8 +17,6 @@ function acrobot_animation(sol, u0, p)
 
     u1 = [el[1] for el in sol.u]
     u2 = [el[2] for el in sol.u]
-    u3 = [el[3] for el in sol.u]
-    u4 = [el[4] for el in sol.u]
     time = sol.t
 
     fig = Figure(); display(fig)
@@ -44,9 +42,9 @@ function acrobot_animation(sol, u0, p)
     tailcol = [RGBAf(c.r, c.g, c.b, (i/tail)^20) for i in 1:tail]
     lines!(ax, traj; linewidth = 3, color = tailcol)
 
-    xlims!(ax, -5, 5)
-    ylims!(ax, -5, 5)
-    limits!(ax, -5, 5, -5, 4)
+    xlims!(ax, -1.05*(p[5]+ p[6]), 1.05*(p[5]+ p[6]))
+    ylims!(ax, -1.05*(p[5]+ p[6]), 1.05*(p[5]+ p[6]))
+    limits!(ax, -1.05*(p[5]+ p[6]), 1.05*(p[5]+ p[6]), -1.05*(p[5]+ p[6]), 1.05*(p[5]+ p[6]))
 
     for i in 1:length(time)
         x1, x2, y1, y2 = xycoords([u1[i], u2[i]], p)
