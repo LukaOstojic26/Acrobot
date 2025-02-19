@@ -5,33 +5,46 @@ function xycoords(state, p)
     l2 = p[6]
     θ1 = state[1]
     θ2 = state[2]
-    x1 = l1 * sin(θ1)
-    y1 = -l1 * cos(θ1)
-    x2 = x1 + l2 * sin(θ2)
-    y2 = y1 - l2 * cos(θ2)
+    x1 = l1 * cos(θ1)
+    y1 = l1 * sin(θ1)
+    x2 = x1 + l2 * cos(θ1 + θ2)
+    y2 = y1 + l2 * sin(θ1 + θ2)
     return x1,x2,y1,y2
 end
 
-function acrobot_animation(t, u, u0, p)
+function acrobot_animation(sol, u0, p)
+
+    u1 = [el[1] for el in sol.u]
+    u2 = [el[2] for el in sol.u]
+    u3 = [el[3] for el in sol.u]
+    u4 = [el[4] for el in sol.u]
+    time = sol.t
 
     fig = Figure(); display(fig)
     ax = Axis(fig[1,1])
 
-    circle = Observable{Any}(0.0);
-    rod = Observable{Any}(0.0);
+    x1, x2, y1, y2 = xycoords(u0, p)
 
-    for i in t
-        x1, x2, y1, y2 = xycoords(u, p)
+    lines!(ax, [0, x1], [0, y1])
+    lines!(ax, [x1, x2], [y1, y2], color = :tomato)
+    scatter!(ax, x1, y1, markersize=10)
+    scatter!(ax, x2, y2, markersize=10, color = :tomato)
 
-        circle[] = [Point2f(x1, y1), Point2f(x2, y2)]
-        rod[] = [Point2f(0, 0), Point2f(x1, y1), Point2f(x2, y2)]
+    xlims!(ax, -5, 5)
+    ylims!(ax, -5, 5)
+    limits!(ax, -5, 5, -5, 4)
 
-        lines!(ax, rod; linewidth = 4, color = :purple)
-        scatter!(ax, balls; marker = :circle, strokewidth = 2, 
-        strokecolor = :purple,
-        color = :black, markersize = [8, 12]
-        )
-        
+    for i in 1:length(time)
+        x1, x2, y1, y2 = xycoords([u1[i], u2[i]], p)
+
+        lines!(ax, [0, x1], [0, y1])
+        lines!(ax, [x1, x2], [y1, y2], color = :tomato)
+        scatter!(ax, x1, y1, markersize=10)
+        scatter!(ax, x2, y2, markersize=10, color = :tomato)
+
+        sleep(0.01)
+        empty!(ax)
+
     end
 
 end
