@@ -1,4 +1,5 @@
 using GLMakie
+using DataStructures: CircularBuffer
 
 function xycoords(state, p)
     l1 = p[5]
@@ -25,10 +26,23 @@ function acrobot_animation(sol, u0, p)
 
     x1, x2, y1, y2 = xycoords(u0, p)
 
-    lines!(ax, [0, x1], [0, y1])
-    lines!(ax, [x1, x2], [y1, y2], color = :tomato)
-    scatter!(ax, x1, y1, markersize=10)
-    scatter!(ax, x2, y2, markersize=10, color = :tomato)
+    circle = Observable([Point2f(x1, y1), Point2f(x2, y2)])
+    rod = Observable([Point2f(0, 0), Point2f(x1, y1), Point2f(x2, y2)])
+
+    tail = 300 
+
+    traj = CircularBuffer{Point2f}(tail)
+    fill!(traj, Point2f(x2, y2)) 
+    traj = Observable(traj) 
+
+    lines!(ax, rod; linewidth = 4, color = :sienna3)
+    scatter!(ax, circle; marker = :circle, strokewidth = 2, 
+                                         strokecolor = :sienna3,
+                                            color = :black, markersize = [8, 12])
+
+    c = to_color(:sienna3)
+    tailcol = [RGBAf(c.r, c.g, c.b, (i/tail)^20) for i in 1:tail]
+    lines!(ax, traj; linewidth = 3, color = tailcol)
 
     xlims!(ax, -5, 5)
     ylims!(ax, -5, 5)
@@ -37,13 +51,11 @@ function acrobot_animation(sol, u0, p)
     for i in 1:length(time)
         x1, x2, y1, y2 = xycoords([u1[i], u2[i]], p)
 
-        lines!(ax, [0, x1], [0, y1])
-        lines!(ax, [x1, x2], [y1, y2], color = :tomato)
-        scatter!(ax, x1, y1, markersize=10)
-        scatter!(ax, x2, y2, markersize=10, color = :tomato)
-
-        sleep(0.01)
-        empty!(ax)
+        rod[] = [Point2f(0, 0), Point2f(x1, y1), Point2f(x2, y2)]
+        circle[] = [Point2f(x1, y1), Point2f(x2, y2)]
+        push!(traj[], Point2f(x2, y2))
+        traj[] = traj[]
+        sleep(0.05)
 
     end
 
