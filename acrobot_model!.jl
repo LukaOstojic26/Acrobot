@@ -1,5 +1,7 @@
+include("control.jl")
+
 function acrobot_model!(dx, x, p, t)
-    I1, I2, m1, m2, l1, l2, lc1, lc2, tau = p;
+    I1, I2, m1, m2, l1, l2, lc1, lc2, K = p;
     g = 9.81;
 
     G1 = I1 + m1*lc1^2 + m2*l1^2;
@@ -11,7 +13,7 @@ function acrobot_model!(dx, x, p, t)
     M = [0 0 1 0;
          0 0 0 1];
     T = [0;
-         tau(t)];  
+         lqr_control(x, K)];  
     C = [(-2*G3*x[4]*sin(x[2])) (-G3*x[4]*sin(x[2]));
           G3*x[3]*sin(x[2])              0           ];
     G = [G4*cos(x[1]) + G5*cos(x[1] + x[2]);
