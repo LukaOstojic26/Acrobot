@@ -7,20 +7,24 @@ function acrobot_model!(dx, x, p, t)
     G3 = m2*l1*lc2;
     G4 = g*(m1*lc1 + m2*l1);
     G5 = m2*g*lc2;
-    J1 = (G2*(G1 + G2 + 2*G3*cos(x[2])) - (G2 + G3*cos(x[2]))^2)/(G2*(G1 + G2 + 2*G3*cos(x[2])));
-    J2 = ((G2 + G3*cos(x[2]))*G3*x[3]*sin(x[2]) + 2*G2*G3*x[4]*sin(x[2]))/(G2*(G1 + G2 + 2*G3*cos(x[2])));
-    J3 = (G3*x[4]*sin(x[2]))/(G1 + G2 + 2*G3*cos(x[2]));
-    J4 = ((G2 + G3*cos(x[2]))*G5*cos(x[1] + x[2]) - G2*(G4*cos(x[1]) + G5*cos(x[1] + x[2])))/(G2*(G1 + G2 + 2*G3*cos(x[2])));
-    J5 = -(G2 + G3*cos(x[2]))/(G2*(G1 + G2 + 2*G3*cos(x[2])));
-    Y1 = -((G2 + G3*cos(x[2]))*J2 + J1*G3*x[3]*sin(x[2]))/(G2*J1);
-    Y2 = -((G2 + G3*cos(x[2]))*J3)/(G2*J1);
-    Y3 = -((G2 + G3*cos(x[2]))*J4 + J1*G5*cos(x[1] + x[2]))/(G2*J1);
-    Y4 = (J1 - (G2 + G3*cos(x[2]))*J5)/(G2*J1);
 
-    dx[1] = x[3]
-    dx[2] = x[4]
-    dx[3] = (J2/J1)*x[3] + (J3/J1)*x[4] + J4/J1 + (J5/J1)*0; #(J5/J1)*tau
-    dx[4] = Y1*x[3] + Y2*x[4] + Y3 + Y4*0; # Y4*tau
+    M = [0 0 1 0;
+         0 0 0 1];
+    T = [0;
+         0];  # T = [0; tau]
+    C = [(-2*G3*x[4]*sin(x[2])) (-G3*x[4]*sin(x[2]));
+          G3*x[3]*sin(x[2])              0           ];
+    G = [G4*cos(x[1]) + G5*cos(x[1] + x[2]);
+                G5*cos(x[1] + x[2])        ];
+    H⁻¹ = (1/(G1*G2 - (G3^2)*(cos(x[2])^2))) .* [G2 (-G2 - G3*cos(x[2])); (-G2 - G3*cos(x[2])) (G1 + G2 + 2*G3*cos(x[2]))]; 
+
+    p1 = M*x;
+    p2 = H⁻¹*(T - C*(M*x) - G);
+
+    dx[1] = p1[1] 
+    dx[2] = p1[2]
+    dx[3] = p2[1] 
+    dx[4] = p2[2] 
 
 end
 
