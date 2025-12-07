@@ -34,7 +34,7 @@ function acrobot_animation(sol, u0, p)
     traj = Observable(traj) 
 
     lines!(ax, rod; linewidth = 4, color = :sienna3)
-    scatter!(ax, circle; marker = :circle, strokewidth = 2, 
+    GLMakie.scatter!(ax, circle; marker = :circle, strokewidth = 2, 
                                          strokecolor = :sienna3,
                                             color = :black, markersize = [8, 12])
 
@@ -42,8 +42,8 @@ function acrobot_animation(sol, u0, p)
     tailcol = [RGBAf(c.r, c.g, c.b, (i/tail)^20) for i in 1:tail]
     lines!(ax, traj; linewidth = 3, color = tailcol)
 
-    xlims!(ax, -1.05*(p[5]+ p[6]), 1.05*(p[5]+ p[6]))
-    ylims!(ax, -1.05*(p[5]+ p[6]), 1.05*(p[5]+ p[6]))
+    GLMakie.xlims!(ax, -1.05*(p[5]+ p[6]), 1.05*(p[5]+ p[6]))
+    GLMakie.ylims!(ax, -1.05*(p[5]+ p[6]), 1.05*(p[5]+ p[6]))
     limits!(ax, -1.05*(p[5]+ p[6]), 1.05*(p[5]+ p[6]), -1.05*(p[5]+ p[6]), 1.05*(p[5]+ p[6]))
 
     for i in 1:length(time)

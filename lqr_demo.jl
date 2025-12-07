@@ -4,6 +4,7 @@ using ControlSystems
 include("acrobot_model!.jl")
 include("animate_acrobot.jl")
 include("linear_acrobot.jl")
+include("reaction_forces.jl")
 
 
 I1, I2, m1, m2, l1, l2, lc1, lc2 = (0.0083, 0.0083, 1, 1, 2, 2, 1, 1);
@@ -26,4 +27,6 @@ param = (I1, I2, m1, m2, l1, l2, lc1, lc2, K);
 prob = ODEProblem(acrobot_model!, x0, tspan, param);
 sol = solve(prob);
 
-acrobot_animation(sol, x0, param)
+reaction_forces(sol, param)
+
+#acrobot_animation(sol, x0, param)
