@@ -49,6 +49,6 @@ function reaction_forces(sol, p)
     Fx = C .* tau .+ D
     Fy = A .* tau .+ B
 
-    Plots.plot(sol.t, [Fx Fy], title="Sile reakcije", label=["Fx" "Fy"], linewidth=3, ylims=(-10, 10))
+    Plots.plot(sol.t, [Fx Fy], title="Sile reakcije", label=["Fx" "Fy"], linewidth=3, ylims=(-30, 31))
 
 end

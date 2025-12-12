@@ -7,12 +7,11 @@ include("linear_acrobot.jl")
 include("reaction_forces.jl")
 
 
-I1, I2, m1, m2, l1, l2, lc1, lc2 = (0.0083, 0.0083, 1, 1, 2, 2, 1, 1);
+I1, I2, m1, m2, l1, l2, lc1, lc2 = (0.00192579089, 0.0281182992, 0.34111236, 2.1601915299999996, 0.3375, 0.4087, 0.240403710, 0.211247879);
 tspan = (0.0, 20.0);
 x0 = [pi/2 - 0.01, 0.0, 0.0, 0.0];
 
-#                        I1      I2    m1  m2  l1  l2  lc1 lc2
-A, B = linear_acrobot((0.0083, 0.0083, 1,  1,  2,  2,  1,  1))
+A, B = linear_acrobot((I1, I2, m1,  m2,  l1,  l2,  lc1,  lc2))
 
 Q = [10.0 0.0 0.0 0.0;
      0.0 10.0 0.0 0.0;
@@ -27,6 +26,6 @@ param = (I1, I2, m1, m2, l1, l2, lc1, lc2, K);
 prob = ODEProblem(acrobot_model!, x0, tspan, param);
 sol = solve(prob);
 
-reaction_forces(sol, param)
+#reaction_forces(sol, param)
 
-#acrobot_animation(sol, x0, param)
+acrobot_animation(sol, x0, param)
