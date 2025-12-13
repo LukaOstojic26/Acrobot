@@ -31,12 +31,16 @@ function reaction_forces(sol, p)
               ((m1/m)*lc1*cos(x[1]) + (m2/m)*l1*cos(x[1]) + (m2/m)*lc2*cos(x[1] + x[2]))  ((m2/m)*lc2*cos(x[1] + x[2]))]
         Jc_d = [((-m1/m)*lc1*x[3]*cos(x[1]) - (m2/m)*l1*x[3]*cos(x[1]) - (m2/m)*lc2*(x[3] + x[4])*cos(x[1] + x[2])) ((-m2/m)*lc2*(x[3] + x[4])*cos(x[1] + x[2]));
                 ((-m1/m)*lc1*x[3]*sin(x[1]) - (m2/m)*l1*x[3]*sin(x[1]) - (m2/m)*lc2*(x[3] + x[4])*sin(x[1] + x[2])) ((-m2/m)*lc2*(x[3] + x[4])*sin(x[1] + x[2]))]
+
+        A = ((m.*Jc)*H⁻¹)
+        B = (m.*(Jc_d - Jc*H⁻¹*C))*(M*x) - m.*(Jc*H⁻¹*G) - m.*[0; -g]
         
-        F = ((m.*Jc)*H⁻¹)*T + (m.*(Jc_d - Jc*H⁻¹*C))*(M*x) - m.*(Jc*H⁻¹*G) - m.*[0; -g]
+        F = A*T + B 
 
         push!(Fr, F)
 
     end
+
 
     return Fr
 

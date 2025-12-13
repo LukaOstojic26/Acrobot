@@ -10,7 +10,7 @@ include("reaction_forces.jl")
 
 I1, I2, m1, m2, l1, l2, lc1, lc2 = (0.00192579089, 0.0281182992, 0.34111236, 2.1601915299999996, 0.3375, 0.4087, 0.240403710, 0.211247879);
 tspan = (0.0, 20.0);
-x0 = [pi/2 - 0.01, 0.0, 0.0, 0.0];
+x0 = [pi/2 - 0.001, 0.01, -0.001, 0.0];
 
 A, B = linear_acrobot((I1, I2, m1,  m2,  l1,  l2,  lc1,  lc2))
 
@@ -37,4 +37,4 @@ Plots.plot(sol.t, Frx, label="Fx", color=:blue, linewidth=3)
 Plots.plot!(sol.t, Fry, label="Fy", color=:red, linewidth=3)
 ########################################
 
-#acrobot_animation(sol, x0, param)
+acrobot_animation(sol, x0, param)

@@ -12,8 +12,10 @@ function acrobot_model!(dx, x, p, t)
 
     M = [0 0 1 0;
          0 0 0 1];
+    #T = [0;
+    #     lqr_control(x, K)];  
     T = [0;
-         lqr_control(x, K)];  
+         lqr_with_saturation(x, p)];  
     C = [(-2*G3*x[4]*sin(x[2])) (-G3*x[4]*sin(x[2]));
           G3*x[3]*sin(x[2])              0           ];
     G = [G4*cos(x[1]) + G5*cos(x[1] + x[2]);
