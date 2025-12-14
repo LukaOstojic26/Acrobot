@@ -39,6 +39,7 @@ function reaction_forces(sol, p)
 
         push!(Fr, F)
 
+
     end
 
 

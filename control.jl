@@ -53,7 +53,7 @@ function lqr_with_saturation(x, p)
 
     v1 = (epsilon - B[2])/A[2, 2]
     v2 = (-mi*B[2] - B[1])/(A[1, 2] + mi*A[2, 2])
-    v3 = (mi*B[2] - B[1])/(A[1, 2] + mi*A[2, 2])
+    v3 = (mi*B[2] - B[1])/(A[1, 2] - mi*A[2, 2])
 
     vrednosti = Dict(
         v1 => "v1", 
